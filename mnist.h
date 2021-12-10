@@ -43,8 +43,9 @@ _STATIC int mnist_load(
 static unsigned int mnist_bin_to_int(char *v)
 {
 	unsigned int rets = 0;
+	int x;
 
-	for (int x = 0; x < 4; x++) 
+	for (x = 0; x < 4; x++) 
 	{
 		rets <<= 8;
 		rets |= (unsigned char)v[x];
@@ -52,11 +53,7 @@ static unsigned int mnist_bin_to_int(char *v)
 	return rets;
 }
 
-_STATIC int mnist_load(
-	const char *imageFilename,
-	const char *labelFilename,
-	mnist_data **data,
-	unsigned int *count)
+_STATIC int mnist_load(const char *imageFilename,const char *labelFilename,mnist_data **data,unsigned int *count)
 {
 	int return_code = 0;
 	int x;
@@ -96,7 +93,7 @@ _STATIC int mnist_load(
 		goto cleanup;
 	}
 
-	for (int x = 0; x < 2; x++) {
+	for (x = 0; x < 2; x++) {
 		fread(tmp, 1, 4, ifp);
 		image_dim[x] = mnist_bin_to_int(tmp);
 	}
@@ -109,15 +106,16 @@ _STATIC int mnist_load(
 	*count = image_cnt;
 	*data = (mnist_data *)malloc(sizeof(mnist_data) * image_cnt);
 
-	for (int x = 0; x < image_cnt; x++) 
+	for (x = 0; x < image_cnt; x++) 
 	{
+		int y;
 		unsigned char read_data[28 * 28];
 		mnist_data *d = &(*data)[x];
 
 		fread(read_data, 1, 28*28, ifp);
 
 #ifdef MNIST_DOUBLE
-		for (int y = 0; y < 28*28; y++) 
+		for (y = 0; y < 28*28; y++) 
 		{
 			d->data[y/28][y%28] = read_data[y] / 255.0;
 		}
