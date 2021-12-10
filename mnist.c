@@ -30,13 +30,13 @@ int  initial(int m, int n)
 float calculateAccuracy(mnist_dataset_t * dataSets, neural_network_t * networks)
 {
     float activation[MNIST_LABELS], max_activation;
-    int predict, correct;
+    int x,y, predict, correct;
 
-    for (int x = 0, correct = 0; x < dataSets->size; x++)
+    for (x = 0, correct = 0; x < dataSets->size; x++)
     {
         Neural_Network_Hypothesis_Calculation(&dataSets->images[x], networks, activation);
 
-        for (int y = 0, predict = 0, max_activation = activation[0]; y < MNIST_LABELS; y++) 
+        for (y = 0, predict = 0, max_activation = activation[0]; y < MNIST_LABELS; y++) 
         {
             if (max_activation < activation[y]) 
             {
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     mnist_dataset_t batch;
     neural_network_t networks;
     float loss, accuracy;
-    int batches;
+    int x,batches;
 
     trainDatasets = mnistGetDataset(Train_Images_Files, Train_Labels_Files);
     testDatasets = mnistGetDataset(Test_Images_Files, Test_Labels_Files);
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     Neural_Network_Random_Weights(&networks);
 
    batches = trainDatasets->size / BATCH_SIZE;
-    for (int x = 0; x < STEPS; x++) 
+    for (x = 0; x < STEPS; x++) 
     {
         mnistBatch(trainDatasets, &batch, 100, x % batches);
 
